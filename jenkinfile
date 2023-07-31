@@ -1,27 +1,51 @@
-pipeline {
-    agent any
-    stages {
-        stage("code checkout")
-        {
-           steps{
-               bat "echoll checkout"
-           }
+pipeline{
+  agent any
+  triggers {
+  cron('0 06 * * *')
+  }
+  stages{
+    stage("code checkout"){
+      steps{
+      bat "echo hello"
+      }
+    }
+      stage("Publish to Artifactory"){
+        steps{
+              rtMavenDeployer(
+                  id: 'deployer',
+                  serverId:'nagp@tarun',
+                  releaseRepo:'tarunnagp',
+                  snapshotRepo:'tarunnagp',
+                )
+              rtMavenRun(
+                  pom: 'pom.xml',
+                  goals:'clean install',
+                  deployerId:'deployer'
+              )
+              rtPublishBuildInfo(
+                  serverId:'nagp@tarun',
+              )
+            }
+              
+      }
+      stage("code build"){
+        steps{
+          bat "mvn clean"
         }
-stage("code test")
-{
-steps{
-bat "echo test"
+      }  
+       stage("code test"){
+          steps{
+          bat "mvn test"
+        }
+      }
+      
 }
-}stage("Code deployed")
-{
-steps{
- bat "echo deployed"
+
 }
-}
-}
-post{
-success{
-bat "success"
-}
-}
-}
+  post {
+    success{
+        bat "echo success"
+            }
+      }
+
+  
