@@ -19,6 +19,7 @@ public class NewUserJourney {
 	@Test
 	public void accountCreate() {
 
+
 		BrowserSetting bs = new BrowserSetting();
 
 		WebDriver driver = bs.BrowserSettings();
