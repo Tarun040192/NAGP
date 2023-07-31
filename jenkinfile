@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+    stages {
+        stage("code checkout")
+        {
+           steps{
+               bat "echoll checkout"
+           }
+        }
+stage("code test")
+{
+steps{
+bat "echo test"
+}
+}stage("Code deployed")
+{
+steps{
+ bat "echo deployed"
+}
+}
+}
+post{
+success{
+bat "success"
+}
+}
+}
