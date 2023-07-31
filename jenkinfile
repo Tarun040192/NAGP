@@ -14,8 +14,14 @@ bat "echo test"
 }
 }stage("Code deployed")
 {
-steps(
+steps{
  bat "echo deployed"
-)
-}}
+}
+}
+}
+post{
+success{
+bat "success"
+}
+}
 }
